@@ -1,4 +1,4 @@
-#When I wrote this, only God and I understood what I was doing 
+#When I wrote this, only God and I understood what I was doing
 #Now, God only knows :D
 
 
@@ -11,12 +11,12 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from selenium.common.exceptions import NoSuchElementException    
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import csv
-import sys  
+import sys
 
-reload(sys)  
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 
@@ -49,7 +49,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 	'Images','Videos', 'Total Courses', 'Total UG','Total PG','Courses'])
 
 	print(sys.argv)
-	
+
 	count_coll = 3#int(sys.argv[0])#0###############################################INITIAL PAGE NO.
 	while count_coll <= 10:#int(sys.argv[1]):#####################################FINAL PAGE NO. - EACH PAGE 10 College
 
@@ -59,7 +59,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 		#driver = webdriver.PhantomJS()
 		driver = webdriver.Firefox()
 		#driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.FIREFOX, command_executor='http://127.0.0.1:4444/wd/hub')
-		
+
 		print('Navigate.')
 		driver.get(url)
 		print('Wait.....')
@@ -85,7 +85,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 					name = coll.find_element_by_xpath(".//div[@class='title']/a").text
 					print(name)
-					
+
 					coll_url = coll.find_element_by_xpath(".//div[@class='title']/a").get_attribute('href')
 					#coll_url = 'http://www.engineering.careers360.com/cmr-institute-technology-hyderabad'
 					print(coll_url)
@@ -97,14 +97,14 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					driver.get(url)'''
 
 					#if 'http://www.engineering.careers360.com/colleges/vivekananda-global-university-jaipur' in str(coll_url) or 'http://www.engineering.careers360.com/galaxy-global-educational-trust%E2%80%99s-group-institutions-faculty-engineering-and-technology-ambala' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/dr-kn-modi-university-tonk' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/world-college-of-technology-and-management-gurgaon' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/iec-college-of-engineering-and-technology-greater-noida' in str(coll_url) : continue
-					
+
 					typeofcoll = coll.find_element_by_xpath(".//div[@class='clg-type clgAtt']").text
-					if 'Type: ' in typeofcoll : 
+					if 'Type: ' in typeofcoll :
 						typeofcoll = typeofcoll.replace('Type: ','')
-					else : 
+					else :
 						typeofcoll = ''
 					print(typeofcoll)
-					
+
 					phones_nos = ''
 					phone1='';phone2='';phone3='';phone4='';phone5=''
 
@@ -134,35 +134,35 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					print('logo : '+logo)
 
 					location = ''
-					location = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul/li").text
+					location = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li").text
 					print(location)
 
 					estd = ''
-					estd = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul/li[2]/span").text
+					estd = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[2]/span").text
 					print(estd)
 
 					website = ''
-					website = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul/li[3]").text
+					website = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[3]").text
 					print(website)
 
-					mail = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul/li[4]/span").text
+					mail = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[4]/span").text
 					print(mail)
 
-					ownership = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[2]/span").text
+					ownership = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[2]/span").text
 					print(ownership)
 
-					approved_by = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[3]/span").text
+					approved_by = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[3]/span").text
 					print(approved_by)
 
 					affiliated_to_text = ''
-					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[4]/a") == True:
-						affiliated_to_text =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[4]/a").text
+					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a") == True:
+						affiliated_to_text =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a").text
 					print(affiliated_to_text)
 
 
 					affiliated_to_link = ''
-					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[4]/a") == True:
-						affiliated_to_link =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div[2]/div/div/ul[2]/li[4]/a").get_attribute('href')
+					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a") == True:
+						affiliated_to_link =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a").get_attribute('href')
 					print(affiliated_to_link)
 
 					facilities = '< '
@@ -178,14 +178,14 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					state_rank = ''
 					if check_exists_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div[3]/div/div/div/span"):
 						state_rank = driver.find_element_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div[3]/div/div/div/span").text
-						if 'A' not in state_rank : state_rank = '' 
+						if 'A' not in state_rank : state_rank = ''
 					print(state_rank)###################################################################################################################################PG KYUN
 
 					#no_courses = driver.find_element_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div[4]/div/h4").text
 					#no_courses = int(no_courses[no_courses.find(':'):].replace(':',''))
 					#print(no_courses)
 
-					
+
 					facebook = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div/div[2]/ul/li/a").get_attribute('href')
 					if 'javascript' in str(facebook) : facebook = ''
 					print(facebook)
@@ -198,7 +198,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					if 'javascript' in str(youtube) : youtube = ''
 					print(youtube)
 
-					wiki = driver.find_element_by_xpath('/html/body/div/div/div/div[2]/div/div/div/div[2]/ul/li[4]/a').get_attribute('href')	
+					wiki = driver.find_element_by_xpath('/html/body/div/div/div/div[2]/div/div/div/div[2]/ul/li[4]/a').get_attribute('href')
 					if 'javascript' in str(wiki) : wiki = ''
 					print(wiki)
 
@@ -220,7 +220,9 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					pie_color_li = []; pie_name_li = []; pie_intake_li = []
 
 					if check_exists_by_xpath("//div[@id='chart_div_ug']") == True :
+						print(111)
 						pie_temp = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
+						print(222)
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g/circle
@@ -235,7 +237,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 								k1 += x.text+' '
 							pie_name_li.append(k1)
 							pie_intake_li.append('')
-						
+
 						print(pie_name_li)
 						print(pie_color_li)
 						temp_li = pie_temp.find_elements_by_xpath(".//*[local-name() = 'svg']/*[local-name() = 'g']")
@@ -273,7 +275,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 								k1 += x.text+' '
 							pie2_name_li.append(k1)
 							pie2_intake_li.append('')
-					
+
 						temp2_li = pie_temp.find_elements_by_xpath(".//*[local-name() = 'svg']/*[local-name() = 'g']")
 						for x in range(1,len(temp2_li)-1):
 							try :
@@ -406,7 +408,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 						print(x.get_attribute('href'))
 						li_vids.append(x.get_attribute('href'))
 
-					
+
 
 					#courses
 					print('\nCourses : ')
@@ -453,7 +455,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					for x in range(len(all_courses)//2):
 						course_logo = all_courses[i].find_element_by_xpath(".//span[@class='accordion_course_image']/img").get_attribute('src')
 						print(course_logo)
-						
+
 						i+=1
 						eligibility = all_courses[i].find_element_by_xpath(".//div[@class='match-interest-eligibillity']").text
 						print(eligibility)
@@ -484,9 +486,9 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 							print('######################################################################')
 							#print(all_courses[i].find_element_by_xpath(".//a[@class='apply_btn']").get_attribute('outerHTML'))
-								
+
 							clink = all_courses[i].find_element_by_xpath(".//a[@class='apply_btn']").get_attribute('href')
-							#clink = 'http://www.engineering.careers360.com/colleges/pes-university-bangalore/courses/m-tech-digital-electronics-and-communications-systems'	
+							#clink = 'http://www.engineering.careers360.com/colleges/pes-university-bangalore/courses/m-tech-digital-electronics-and-communications-systems'
 							driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 't')
 							#driver = webdriver.Firefox()
 							driver.get(clink)
@@ -497,7 +499,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 							eligibility = ''
 							#eligibility = driver.find_element_by_xpath("//span[@class='more-eligibility']").get_attribute('innerHTML').replace('<span class="readless-eligibility" style="color:blue; cursor:pointer;">...See Less</span>','')
-							
+
 							print('Eligibility : ')
 							if check_exists_by_xpath("//span[@class='more-eligibility']") == True:
 								eligibility = driver.find_element_by_xpath("//span[@class='more-eligibility']").get_attribute('innerHTML').replace('<span class="readless-eligibility" style="color:blue; cursor:pointer;">...See Less</span>','').encode('utf8')
@@ -524,7 +526,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 							i+=1
 
 							str_courses += ('< ' +'Course Name : ' + cname + ' # Eligibility : ' + eligibility + str_temp  +' # Details : '+det+' >').encode('utf8')
-							
+
 							driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 'w')
 							time.sleep(0.5)
 							#driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)############################################
@@ -599,10 +601,10 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 						tot_ug.encode('utf8'),
 						tot_pg.encode('utf8'),
 						str_courses.encode('utf8')
-					
+
 					 ])
-						
-					
+
+
 				#http://www.engineering.careers360.com/vit-university-vellore/branches
 				#http://www.engineering.careers360.com/colleges/list-of-engineering-colleges-in-India/branches
 
@@ -611,10 +613,10 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)
 
 
-					
 
 
-					
+
+
 
 
 
