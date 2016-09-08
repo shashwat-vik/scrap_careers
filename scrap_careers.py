@@ -39,10 +39,10 @@ csv.register_dialect(
 
 dont_print = 1 #a-0;w-1
 
-link = "http://www.engineering.careers360.com/colleges/birla-institute-of-technology-and-science-pilani"
+link = "http://www.engineering.careers360.com/colleges/punjab-engineering-college-university-of-technology-chandigarh"
 
 number_of_colleges_to_count = 1
-courses_per_college = 2
+courses_per_college = 3
 red_signal = False
 
 with open('data_careers_1_100_x.csv','w') as mycsv:################################################'w'
@@ -342,7 +342,10 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					gender_ratio  = '';avg_age = ''
 					temp_mode = driver.find_elements_by_xpath("//div[@id='mCSB_1_container']/table/tbody/tr")
 					for x in temp_mode:
-						mode_exam_name = x.find_element_by_xpath('.//td[1]/a').text
+						try:
+							mode_exam_name = x.find_element_by_xpath('.//td[1]/a').text
+						except NoSuchElementException:
+							mode_exam_name = x.find_element_by_xpath('.//td[1]').text
 						mode_type = x.find_element_by_xpath('.//td[2]').text
 						mode_level = x.find_element_by_xpath('.//td[3]').text
 						str_mode += '< ' +'Exam : '+mode_exam_name+' # Type : ' +mode_type+' # Level : '+mode_level+ ' >'
