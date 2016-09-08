@@ -39,7 +39,9 @@ csv.register_dialect(
 
 dont_print = 1 #a-0;w-1
 
-number_of_colleges_to_count = 2
+link = "http://www.engineering.careers360.com/colleges/birla-institute-of-technology-and-science-pilani"
+
+number_of_colleges_to_count = 1
 courses_per_college = 2
 red_signal = False
 
@@ -82,16 +84,21 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 
 				for coll in colls_url:
 					course_count = 0
-					college_count += 1
+
 					name = ''
 					coll_url =''
 					typeofcoll = ''
 					phones = ''
 
+					coll_url = coll.find_element_by_xpath(".//div[@class='title']/a").get_attribute('href')
+					if(coll_url != link):
+						print "Skipping - "+coll_url
+						continue
+
+					college_count += 1
 					name = coll.find_element_by_xpath(".//div[@class='title']/a").text
 					print(name)
 
-					coll_url = coll.find_element_by_xpath(".//div[@class='title']/a").get_attribute('href')
 					#coll_url = 'http://www.engineering.careers360.com/cmr-institute-technology-hyderabad'
 					print(coll_url)
 					'''url+='/branches'
@@ -139,35 +146,35 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					print('logo : '+logo)
 
 					location = ''
-					location = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li").text
+					location = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li").text
 					print(location)
 
 					estd = ''
-					estd = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[2]/span").text
+					estd = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span").text
 					print(estd)
 
 					website = ''
-					website = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[3]").text
+					website = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[3]").text
 					print(website)
 
-					mail = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul/li[4]/span").text
+					mail = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span").text
 					print(mail)
 
-					ownership = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[2]/span").text
+					ownership = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span").text
 					print(ownership)
 
-					approved_by = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[3]/span").text
+					approved_by = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span").text
 					print(approved_by)
 
 					affiliated_to_text = ''
-					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a") == True:
-						affiliated_to_text =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[4]/a") == True:
+						affiliated_to_text =  driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[4]/a").text
 					print(affiliated_to_text)
 
 
 					affiliated_to_link = ''
-					if check_exists_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a") == True:
-						affiliated_to_link =  driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/div[2]/div/div/div[3]/ul[2]/li[4]/a").get_attribute('href')
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[4]/a") == True:
+						affiliated_to_link =  driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[4]/a").get_attribute('href')
 					print(affiliated_to_link)
 
 					facilities = '< '
