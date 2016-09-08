@@ -220,9 +220,17 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					pie_color_li = []; pie_name_li = []; pie_intake_li = []
 
 					if check_exists_by_xpath("//div[@id='chart_div_ug']") == True :
-						print(111)
-						pie_temp = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
-						print(222)
+						def find(driver):
+							print('WAITING FOR DOM-PIE')
+							e = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
+							return e
+						print('INITITAING WAIT FOR DOM-PIE')
+						pie_temp = WebDriverWait(driver, 10).until(find)
+						print('PIE LOADED SUCCESSFULLY')
+
+						#print(111)
+						#pie_temp = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
+						#print(222)
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g/circle
