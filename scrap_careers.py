@@ -330,7 +330,10 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					gender_ratio  = '';avg_age = ''
 					temp_mode = driver.find_elements_by_xpath("//div[@id='mCSB_1_container']/table/tbody/tr")
 					for x in temp_mode:
-						mode_exam_name = x.find_element_by_xpath('.//td[1]/a').text
+						try:
+							mode_exam_name = x.find_element_by_xpath('.//td[1]/a').text
+						except NoSuchElementException:
+							mode_exam_name = x.find_element_by_xpath('.//td[1]').text
 						mode_type = x.find_element_by_xpath('.//td[2]').text
 						mode_level = x.find_element_by_xpath('.//td[3]').text
 						str_mode += '< ' +'Exam : '+mode_exam_name+' # Type : ' +mode_type+' # Level : '+mode_level+ ' >'
