@@ -37,11 +37,16 @@ csv.register_dialect(
     lineterminator = '\r\n',
     quoting = csv.QUOTE_MINIMAL)
 
-dont_print = 0 #a-0;w-1
+dont_print = 1 #a-0;w-1
 
-with open('data_careers_1_100.csv','a') as mycsv:################################################'w'
+number_of_colleges_to_count = 2
+courses_per_college = 2
+red_signal = False
+
+with open('data_careers_1_100_x.csv','w') as mycsv:################################################'w'
 #with open('/home/bitnami/aakash/data/data_careers_1-1000.csv','w') as mycsv:
 #with open('/home/aakash/data/data_careers_1-1000.csv','w') as mycsv:
+	college_count = 0
 	c = csv.writer(mycsv, dialect='mydialect')
 	if dont_print == 1:
 		c.writerow(['Name','Type','Phone1','Phone2','Phone3','Phone4','Phone5','Logo URL','Also Known As','Location','Estd.','Website','Mail','Ownership','Approved By','Affiliated to','Link-Affiliated to', 'Facilities', 'State Rank', 'Facebook',
@@ -76,8 +81,8 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 				colls_url = driver.find_elements_by_xpath("//div[@class='content-box f-right']")
 
 				for coll in colls_url:
-
-
+					course_count = 0
+					college_count += 1
 					name = ''
 					coll_url =''
 					typeofcoll = ''
@@ -225,7 +230,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 							e = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
 							return e
 						print('INITITAING WAIT FOR DOM-PIE')
-						pie_temp = WebDriverWait(driver, 10).until(find)
+						pie_temp = WebDriverWait(driver, 30).until(find)
 						print('PIE LOADED SUCCESSFULLY')
 
 						#print(111)
@@ -490,6 +495,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 						i=0
 						for  x in range(len(all_courses)//2):
+							course_count += 1
 							i+=1
 
 							print('######################################################################')
@@ -533,11 +539,15 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 							i+=1
 
-							str_courses += ('< ' +'Course Name : ' + cname + ' # Eligibility : ' + eligibility + str_temp  +' # Details : '+det+' >').encode('utf8')
+							str_courses += ('< ' +'Course Name : ' + cname + ' # Eligibility : ' + eligibility + str_temp  +' # Details : '+det+' >'+'\n\n').encode('utf8')
 
 							driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 'w')
 							time.sleep(0.5)
+							if(course_count == courses_per_college) :
+								red_signal = True
+								break
 							#driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)############################################
+						if(red_signal): break
 						if check_exists_by_xpath("//a[@title='Go to next page']") == False:break
 						else:
 							clink_nxt_page = driver.find_element_by_xpath("//a[@title='Go to next page']").get_attribute('href')
@@ -620,16 +630,16 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					time.sleep(0.5)
 					driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)
 
-
-
-
-
-
-
-
-
 					print('\n--------------------------------------------\n')
+					if(college_count == number_of_colleges_to_count):
+						red_signal = True
+						break
+					else:
+						red_signal = False
+			if(red_signal): break
 		#/html/body/div/div/div[3]/div/div/ol/li/div[3]/div/a
 		#/html/body/div/div/div[3]/div/div/ol/li[2]/div[3]/div/a
 		print('All DONE')
 		driver.close()
+
+		if(red_signal) : break
