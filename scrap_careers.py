@@ -27,6 +27,12 @@ def check_exists_by_xpath(xpath):
         return False
     return True
 
+def container_check_exists_by_xpath(container, xpath):
+	try:
+		container.find_element_by_xpath(xpath)
+	except NoSuchElementException:
+		return False
+	return True
 
 csv.register_dialect(
     'mydialect',
@@ -37,7 +43,7 @@ csv.register_dialect(
     lineterminator = '\r\n',
     quoting = csv.QUOTE_MINIMAL)
 
-dont_print = 0 #a-0;w-1
+dont_print = 1 #a-0;w-1
 
 with open('data_careers_1_100.csv','a') as mycsv:################################################'w'
 #with open('/home/bitnami/aakash/data/data_careers_1-1000.csv','w') as mycsv:
@@ -107,14 +113,15 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 					phones_nos = ''
 					phone1='';phone2='';phone3='';phone4='';phone5=''
-
-					phones = coll.find_element_by_xpath(".//div[@class='clg-contact clgAtt']").text.replace('Contact: ','')
 					phone=['','','','','']
-					temp_phones = phones.split(',')
-					for x in range(5):
-						if x < len(temp_phones):
-							phone[x] = temp_phones[x]
-						else: break
+
+					if container_check_exists_by_xpath(coll, ".//div[@class='clg-contact clgAtt']") == True:
+						phones = coll.find_element_by_xpath(".//div[@class='clg-contact clgAtt']").text.replace('Contact: ','')
+						temp_phones = phones.split(',')
+						for x in range(5):
+							if x < len(temp_phones):
+								phone[x] = temp_phones[x]
+							else: break
 					print(phones)
 
 					url = coll_url
@@ -134,24 +141,33 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					print('logo : '+logo)
 
 					location = ''
-					location = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li") == True:
+						location = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li").text
 					print(location)
 
 					estd = ''
-					estd = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span") == True:
+						estd = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span").text
 					print(estd)
 
 					website = ''
-					website = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[3]").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[3]") == True:
+						website = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[3]").text
 					print(website)
 
-					mail = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span").text
+					mail = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span") == True:
+						mail = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span").text
 					print(mail)
 
-					ownership = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span").text
+					ownership = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span") == True:
+						ownership = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span").text
 					print(ownership)
 
-					approved_by = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span").text
+					approved_by = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span") == True:
+						approved_by = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span").text
 					print(approved_by)
 
 					affiliated_to_text = ''
