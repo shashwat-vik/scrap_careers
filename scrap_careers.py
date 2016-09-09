@@ -27,6 +27,12 @@ def check_exists_by_xpath(xpath):
         return False
     return True
 
+def container_check_exists_by_xpath(container, xpath):
+	try:
+		container.find_element_by_xpath(xpath)
+	except NoSuchElementException:
+		return False
+	return True
 
 csv.register_dialect(
     'mydialect',
@@ -39,8 +45,8 @@ csv.register_dialect(
 
 dont_print = 1 #a-0;w-1
 
-number_of_colleges_to_count = 2
-courses_per_college = 2
+number_of_colleges_to_count = 100
+courses_per_college = 3
 red_signal = False
 
 with open('data_careers_1_100_x.csv','w') as mycsv:################################################'w'
@@ -55,8 +61,8 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 
 	print(sys.argv)
 
-	count_coll = 3#int(sys.argv[0])#0###############################################INITIAL PAGE NO.
-	while count_coll <= 10:#int(sys.argv[1]):#####################################FINAL PAGE NO. - EACH PAGE 10 College
+	count_coll = 6#int(sys.argv[0])#0###############################################INITIAL PAGE NO.
+	while count_coll <= 20:#int(sys.argv[1]):#####################################FINAL PAGE NO. - EACH PAGE 10 College
 
 		url = 'http://www.engineering.careers360.com/colleges/list-of-engineering-colleges-in-India?page='+str(count_coll)
 		print('Launch...')
@@ -112,14 +118,15 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 
 					phones_nos = ''
 					phone1='';phone2='';phone3='';phone4='';phone5=''
-
-					phones = coll.find_element_by_xpath(".//div[@class='clg-contact clgAtt']").text.replace('Contact: ','')
 					phone=['','','','','']
-					temp_phones = phones.split(',')
-					for x in range(5):
-						if x < len(temp_phones):
-							phone[x] = temp_phones[x]
-						else: break
+
+					if container_check_exists_by_xpath(coll, ".//div[@class='clg-contact clgAtt']") == True:
+						phones = coll.find_element_by_xpath(".//div[@class='clg-contact clgAtt']").text.replace('Contact: ','')
+						temp_phones = phones.split(',')
+						for x in range(5):
+							if x < len(temp_phones):
+								phone[x] = temp_phones[x]
+							else: break
 					print(phones)
 
 					url = coll_url
@@ -139,24 +146,33 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					print('logo : '+logo)
 
 					location = ''
-					location = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li") == True:
+						location = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li").text
 					print(location)
 
 					estd = ''
-					estd = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span") == True:
+						estd = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[2]/span").text
 					print(estd)
 
 					website = ''
-					website = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[3]").text
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[3]") == True:
+						website = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[3]").text
 					print(website)
 
-					mail = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span").text
+					mail = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span") == True:
+						mail = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul/li[4]/span").text
 					print(mail)
 
-					ownership = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span").text
+					ownership = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span") == True:
+						ownership = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[2]/span").text
 					print(ownership)
 
-					approved_by = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span").text
+					approved_by = ''
+					if check_exists_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span") == True:
+						approved_by = driver.find_element_by_xpath("//div[@class='instituteInfo']/ul[2]/li[3]/span").text
 					print(approved_by)
 
 					affiliated_to_text = ''
@@ -634,6 +650,7 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)
 
 					print('\n--------------------------------------------\n')
+					print '\n\n\nCOLLEGE COUNT : {0}\n\n\n'.format(college_count)
 					if(college_count == number_of_colleges_to_count):
 						red_signal = True
 						break
