@@ -242,12 +242,12 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 
 					if check_exists_by_xpath("//div[@id='chart_div_ug']") == True :
 						def find(driver):
-							print('WAITING FOR DOM-PIE')
+							print('WAITING FOR UG DOM-PIE')
 							e = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
 							return e
-						print('INITITAING WAIT FOR DOM-PIE')
+						print('INITITAING WAIT FOR UG DOM-PIE')
 						pie_temp = WebDriverWait(driver, 30).until(find)
-						print('PIE LOADED SUCCESSFULLY')
+						print('UG PIE LOADED SUCCESSFULLY')
 
 						#print(111)
 						#pie_temp = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
@@ -289,7 +289,15 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					pie2_color_li = []; pie2_name_li = []; pie2_intake_li = []
 
 					if check_exists_by_xpath("//div[@id='chart_div_pg']") == True :
-						pie_temp = driver.find_element_by_xpath("//div[@id='chart_div_pg']/div/div/div")
+
+						def find(driver):
+							print('WAITING FOR PG DOM-PIE')
+							e = driver.find_element_by_xpath("//div[@id='chart_div_pg']/div/div/div")
+							return e
+						print('INITITAING WAIT FOR PG DOM-PIE')
+						pie_temp = WebDriverWait(driver, 30).until(find)
+						print('PG PIE LOADED SUCCESSFULLY')
+
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g
 						#/html/body/div/div/div/div[3]/div/div/div/div[4]/div/div[2]/div/div/div/div/div/svg/g/g/circle
@@ -451,7 +459,8 @@ with open('data_careers_1_100_x.csv','w') as mycsv:#############################
 					driver.get(url)
 
 					courses = ''
-					courses = driver.find_element_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div/div/div/h4").text.replace('Number of Courses Available:','')
+					if check_exists_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div/div/div/h4") == True:
+						courses = driver.find_element_by_xpath("/html/body/div/div/div/div[3]/div/div/div/div/div/div/h4").text.replace('Number of Courses Available:','')
 					print(courses)
 
 					tot_ug = ''
