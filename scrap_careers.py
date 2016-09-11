@@ -16,6 +16,22 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import csv
 import sys
 
+##########################
+START_PAGE = 3
+START_COLLEGE_LINK = 'http://www.engineering.careers360.com/colleges/ymca-university-of-science-and-technology-faridabad'					# DEF = ''
+##########################
+# DO-NOT TOUCH BELOW WITHOUT UNDERSTANDING THE IMPLICATIONS
+##########################
+COURSES_PER_COLLEGE = 2					# DEF = -1
+NUMBER_OF_COLLEGES_TO_COUNT = 2			# DEF = -1
+
+
+END_PAGE = 1000							# DEF = -1
+##########################
+COLLEGE_COUNT = 0						# DEF = 0
+PAUSE_FLAG = False						# DEF = False
+##########################
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -43,7 +59,7 @@ csv.register_dialect(
     lineterminator = '\r\n',
     quoting = csv.QUOTE_MINIMAL)
 
-dont_print = 1 #a-0;w-1
+dont_print = 0 #a-0;w-1
 
 with open('data_careers_1_100.csv','a') as mycsv:################################################'w'
 #with open('/home/bitnami/aakash/data/data_careers_1-1000.csv','w') as mycsv:
@@ -56,8 +72,8 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 	print(sys.argv)
 
-	count_coll = 3#int(sys.argv[0])#0###############################################INITIAL PAGE NO.
-	while count_coll <= 10:#int(sys.argv[1]):#####################################FINAL PAGE NO. - EACH PAGE 10 College
+	count_coll = START_PAGE#int(sys.argv[0])#0###############################################INITIAL PAGE NO.
+	while count_coll <= END_PAGE:#int(sys.argv[1]):#####################################FINAL PAGE NO. - EACH PAGE 10 College
 
 		url = 'http://www.engineering.careers360.com/colleges/list-of-engineering-colleges-in-India?page='+str(count_coll)
 		print('Launch...')
@@ -82,17 +98,23 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 				colls_url = driver.find_elements_by_xpath("//div[@class='content-box f-right']")
 
 				for coll in colls_url:
+					coll_url = coll.find_element_by_xpath(".//div[@class='title']/a").get_attribute('href')
+					if (START_COLLEGE_LINK != ''):
+						if (coll_url != START_COLLEGE_LINK):
+							print "Skipping - "+coll_url
+							continue
+						else:
+							START_COLLEGE_LINK = ''
 
+					COLLEGE_COUNT += 1
 
 					name = ''
-					coll_url =''
 					typeofcoll = ''
 					phones = ''
 
 					name = coll.find_element_by_xpath(".//div[@class='title']/a").text
 					print(name)
 
-					coll_url = coll.find_element_by_xpath(".//div[@class='title']/a").get_attribute('href')
 					#coll_url = 'http://www.engineering.careers360.com/cmr-institute-technology-hyderabad'
 					print(coll_url)
 					'''url+='/branches'
@@ -241,7 +263,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 							e = driver.find_element_by_xpath("//div[@id='chart_div_ug']/div/div/div")
 							return e
 						print('INITITAING WAIT FOR UG DOM-PIE')
-						pie_temp = WebDriverWait(driver, 10).until(find)
+						pie_temp = WebDriverWait(driver, 30).until(find)
 						print('UG PIE LOADED SUCCESSFULLY')
 
 						#print(111)
@@ -508,7 +530,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 						print(mode)
 						'''
 
-
+					COURSE_COUNT = 0
 					str_courses = ''
 
 					while(True):
@@ -517,6 +539,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 						i=0
 						for  x in range(len(all_courses)//2):
+							COURSE_COUNT += 1
 							i+=1
 
 							print('######################################################################')
@@ -564,7 +587,12 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 							driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 'w')
 							time.sleep(0.5)
+							if COURSE_COUNT == COURSES_PER_COLLEGE:
+								PAUSE_FLAG = True
+								break
 							#driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)############################################
+						if PAUSE_FLAG:
+							break
 						if check_exists_by_xpath("//a[@title='Go to next page']") == False:break
 						else:
 							clink_nxt_page = driver.find_element_by_xpath("//a[@title='Go to next page']").get_attribute('href')
@@ -647,16 +675,20 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 					time.sleep(0.5)
 					driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)
 
-
-
-
-
-
-
-
-
 					print('\n--------------------------------------------\n')
+					print '\n\n\nCOLLEGE COUNT : ',COLLEGE_COUNT
+					print 'PAGE : ',count_coll-1,'\n\n\n'
+					if COLLEGE_COUNT == NUMBER_OF_COLLEGES_TO_COUNT:
+						PAUSE_FLAG = True
+						break
+					else:
+						PAUSE_FLAG = False
+			if PAUSE_FLAG:
+				break
 		#/html/body/div/div/div[3]/div/div/ol/li/div[3]/div/a
 		#/html/body/div/div/div[3]/div/div/ol/li[2]/div[3]/div/a
 		print('All DONE')
 		driver.close()
+
+		if PAUSE_FLAG:
+			break
