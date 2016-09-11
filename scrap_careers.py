@@ -17,13 +17,13 @@ import csv
 import sys
 
 ##########################
-START_PAGE = 3
-START_COLLEGE_LINK = 'http://www.engineering.careers360.com/colleges/chandigarh-university-chandigarh'					# DEF = ''
+START_PAGE = 1
+START_COLLEGE_LINK = ''					# DEF = ''
 ##########################
 # DO-NOT TOUCH BELOW WITHOUT UNDERSTANDING THE IMPLICATIONS
 ##########################
-COURSES_PER_COLLEGE = 3					# DEF = -1
-NUMBER_OF_COLLEGES_TO_COUNT = 2			# DEF = -1
+MAX_COURSES_PER_COLLEGE = 2				# DEF = -1
+NUMBER_OF_COLLEGES_TO_COUNT = -1		# DEF = -1
 
 
 END_PAGE = 1000							# DEF = -1
@@ -601,7 +601,7 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 							driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + 'w')
 							time.sleep(0.5)
-							if COURSE_COUNT == COURSES_PER_COLLEGE:
+							if COURSE_COUNT == MAX_COURSES_PER_COLLEGE:
 								PAUSE_FLAG = True
 								break
 							#driver.find_element_by_tag_name("body").send_keys(Keys.CONTROL + Keys.TAB)############################################
