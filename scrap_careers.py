@@ -18,11 +18,11 @@ import sys
 
 ##########################
 START_PAGE = 3
-START_COLLEGE_LINK = 'http://www.engineering.careers360.com/colleges/ymca-university-of-science-and-technology-faridabad'					# DEF = ''
+START_COLLEGE_LINK = 'http://www.engineering.careers360.com/colleges/chandigarh-university-chandigarh'					# DEF = ''
 ##########################
 # DO-NOT TOUCH BELOW WITHOUT UNDERSTANDING THE IMPLICATIONS
 ##########################
-COURSES_PER_COLLEGE = 2					# DEF = -1
+COURSES_PER_COLLEGE = 3					# DEF = -1
 NUMBER_OF_COLLEGES_TO_COUNT = 2			# DEF = -1
 
 
@@ -126,11 +126,12 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 					#if 'http://www.engineering.careers360.com/colleges/vivekananda-global-university-jaipur' in str(coll_url) or 'http://www.engineering.careers360.com/galaxy-global-educational-trust%E2%80%99s-group-institutions-faculty-engineering-and-technology-ambala' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/dr-kn-modi-university-tonk' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/world-college-of-technology-and-management-gurgaon' in str(coll_url) or 'http://www.engineering.careers360.com/colleges/iec-college-of-engineering-and-technology-greater-noida' in str(coll_url) : continue
 
-					typeofcoll = coll.find_element_by_xpath(".//div[@class='clg-type clgAtt']").text
-					if 'Type: ' in typeofcoll :
-						typeofcoll = typeofcoll.replace('Type: ','')
-					else :
-						typeofcoll = ''
+					if container_check_exists_by_xpath(coll, ".//div[@class='clg-type clgAtt']") == True:
+						typeofcoll = coll.find_element_by_xpath(".//div[@class='clg-type clgAtt']").text
+						if 'Type: ' in typeofcoll :
+							typeofcoll = typeofcoll.replace('Type: ','')
+						else :
+							typeofcoll = ''
 					print(typeofcoll)
 
 					phones_nos = ''
@@ -405,7 +406,20 @@ with open('data_careers_1_100.csv','a') as mycsv:###############################
 
 					if check_exists_by_xpath("//div[@id='piechartgeo']") == True:
 						temp_geo = driver.find_element_by_xpath("//div[@id='piechartgeo']")
-						temp_g = temp_geo.find_elements_by_xpath(".//*[local-name() = 'svg']/*[local-name() = 'g']")
+
+						def find(driver):
+							global temp_geo
+							print('WAITING FOR GEO DOM-PIE')
+							e = temp_geo.find_elements_by_xpath(".//*[local-name() = 'svg']/*[local-name() = 'g']")
+							try:
+								e[0].find_elements_by_xpath(".//*[local-name() = 'g']")
+							except IndexError:
+								raise NoSuchElementException
+							return e
+						print('INITITAING WAIT FOR GEO DOM-PIE')
+						temp_g = WebDriverWait(driver, 30).until(find)
+						print('GEO LOADED SUCCESSFULLY')
+
 						temp_blocks = temp_g[0].find_elements_by_xpath(".//*[local-name() = 'g']")
 
 						for x in temp_blocks[::2]:
